@@ -21,8 +21,8 @@ load_dotenv()
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 def get_weather(latitude: float, longitude: float)-> str: #siempre devuelve un string
-    url =  url = f"https://api.open-meteo.com/v1/forecast?latitude={latitude}&longitude={longitude}&current_weather=true"
     print("Getting weather...")
+    url = f"https://api.open-meteo.com/v1/forecast?latitude={latitude}&longitude={longitude}&current_weather=true"
     response = requests.get(url)
     weather_data = response.json()
 
@@ -35,7 +35,7 @@ messages=[
         },
         {
             "role": "user",
-            "content": "¿Cual es el clima de Colombia, Bogotá?"
+            "content": "¿Cual es el clima de Bogotá?"
         }
     ]
 
@@ -74,24 +74,25 @@ response = client.chat.completions.create(
 )
 
 assistent_msg= response.choices[0].message
+print("Respuesta del asistente")
 print(assistent_msg)
 
 if assistent_msg.tool_calls:
     for tool_call in assistent_msg.tool_calls:
-        if tool_call =='function':
+        if tool_call.type =='function':
             function_name = tool_call.function.name
             function_args = json.loads(tool_call.function.arguments)
-            print(f"El asistente esta llamando la funcion del clima")
+            print("El asistente esta llamando la funcion del clima")
 
             if function_name =="get_weather":
                 weather_info = get_weather(
                     latitude = function_args.get("latitude"),
-                    longitude=function_args("longitude"))
+                    longitude= function_args.get("longitude"))
                 
                 messages.append(assistent_msg)
                 messages.append({
                     "role":"tool",
-                    "tool_call_id":tool_call.index,
+                    "tool_call_id":tool_call.id,
                     "name":"function_name",
                     "content":weather_info
 
@@ -106,4 +107,5 @@ response = client.chat.completions.create(
 )
 
 final_reply = response.choices[0].message.content
+print("Respuesta del asistente")
 print(final_reply)
