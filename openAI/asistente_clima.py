@@ -1,0 +1,98 @@
+import os
+from dotenv import load_dotenv
+from openai import OpenAI
+import requests
+import json
+
+load_dotenv()
+
+
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+
+def get_weather(latitude: float, longitude: float)-> str: #siempre devuelve un string
+    url =  url = f"https://api.open-meteo.com/v1/forecast?latitude={latitude}&longitude={longitude}&current_weather=true"
+    print("Getting weather...")
+    response = requests.get(url)
+    weather_data = response.json()
+
+    return json.dumps(weather_data)
+
+messages=[
+        {
+            "role": "system",
+            "content": "Te llamas PlatziVision, eres un asistente del clima del mundo en tiempo real"
+        },
+        {
+            "role": "user",
+            "content": "¿Cual es el clima de Colombia, Bogotá?"
+        }
+    ]
+
+functions = [
+    {
+        "type":"function",
+        "function":{
+            "name":"get_weather",
+            "description":"Usa esta funcion para obtener el clima",
+            "parameters":{
+                "type":"object",
+                "properties":{
+                    "latitude":{
+                        "type":"number",
+                        "description":"Latitud de la ubicacion"
+                    },
+                    "longitude":{
+                        "type":"number",
+                        "description":"Longitud de la ubicacion"
+                    }
+                },
+                "required":["latitude","longitude"]
+            },
+            "output":{
+                "type":"string",
+                "description":"Clima de la ubicacion pedida por el usuario"
+            }
+        }
+    }
+]
+
+response = client.chat.completions.create(
+    model="gpt-4o",
+    messages=messages,
+    tools= functions
+)
+
+assistent_msg= response.choices[0].message
+print(assistent_msg)
+
+if assistent_msg.tool_calls:
+    for tool_call in assistent_msg.tool_calls:
+        if tool_call =='function':
+            function_name = tool_call.function.name
+            function_args = json.loads(tool_call.function.arguments)
+            print(f"El asistente esta llamando la funcion del clima")
+
+            if function_name =="get_weather":
+                weather_info = get_weather(
+                    latitude = function_args.get("latitude"),
+                    longitude=function_args("longitude"))
+                
+                messages.append(assistent_msg)
+                messages.append({
+                    "role":"tool",
+                    "tool_call_id":tool_call.index,
+                    "name":"function_name",
+                    "content":weather_info
+
+                })
+
+second_response= client.chat.completions
+
+
+response = client.chat.completions.create(
+    model="gpt-4o",
+    messages=messages
+)
+
+final_reply = response.choices[0].message.content
+print(final_reply)
