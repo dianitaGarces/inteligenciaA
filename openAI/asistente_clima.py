@@ -1,3 +1,14 @@
+"""
+Clase de herramientas en ChatCompletion API
+
+Podemos utilizar herramientas en ChatCompletion API para que el modelo pueda interactuar con funciones externas.
+
+Para este ejemplo hemos usado OpenMeteo, una API que nos permite obtener información del clima en tiempo real. En este caso, hemos creado una función que se encarga de obtener el clima de una ubicación específica basada en la latitud y longitud.
+
+Luego, hemos creado un historial de mensajes que incluye un mensaje del sistema que le dice al modelo que use la función get_weather para obtener el clima de una ubicación específica. Así como un mensaje del usuario preguntando por el clima de Buenos Aires.
+
+Finalmente, hemos ejecutado el modelo con las herramientas y el historial de mensajes. De esa forma el modelo llamará a la función, nosotros nos encargamos de ejecutarla en nuestro entorno, devolvemos la respuesta y el modelo la incluirá en su respuesta final.
+"""
 import os
 from dotenv import load_dotenv
 from openai import OpenAI
