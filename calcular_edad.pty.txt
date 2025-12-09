@@ -1,0 +1,44 @@
+/***
+Crea una función que calcule la edad de una persona a partir de su fecha de nacimiento y la fecha actual.
+
+Ambas fechas se proporcionan en años, meses y días, y la edad debe retornarse de la misma manera, en una cadena con la forma “aa,MM,dd”. Suponga que todos los meses son de 30 días.
+
+Por ejemplo, si Julieta Pérez nació el 20 de noviembre de 1986, y la fecha actual fuese el 16 de octubre de 1987, la función retornaría que la edad de Julieta es “0,10,26”, es decir, 0 años, 10 meses y 26 días.
+
+**/ 
+
+
+def calcular_edad(dia_nacio: int, mes_nacio: int, anio_nacio: int, dia_actual: int, mes_actual: int, 
+anio_actual: int)->str:
+    dias_cont_nacio=calcular_dias(dia_nacio)
+    mes_cont_nacio=calcular_mes(mes_nacio)
+    
+    mes_total=mes_actual-1
+    mes_total=mes_total+mes_cont_nacio
+
+    dias_cont_nacio=dias_cont_nacio+dia_actual
+    dias_total=dias_cont_nacio
+    if dias_total>30:
+        dias_total =dias_cont_nacio-30
+        mes_total=mes_total+(dias_cont_nacio//30)
+    
+    anio_total=anio_actual-(anio_nacio+1)
+
+    if mes_total>12:
+        anio_total=anio_total+(mes_total//12)
+        mes_total=mes_total%12
+
+    print('dias '+str(dias_total)+' meses '+str(mes_total)+' anio '+str(anio_total))
+    return ''
+def calcular_dias(dia_nacio: int)->int:
+    dias_del_mes=30
+    dias=dias_del_mes-dia_nacio
+    return dias
+
+def calcular_mes(mes_nacio: int)->int:
+    mes_del_anio=12
+    mes=mes_del_anio-mes_nacio
+    return mes
+
+
+calcular_edad(5,4,1991,21,11,2025)

@@ -1,0 +1,16 @@
+	
+Si el número n es divisible por 2d, retorna 2. Si el número n es divisible entre d pero no entre 2d, retorna 1. De lo contrario, retorna 0.
+
+
+def es_divisible(n:int, d:int)->int:
+    
+    if d==0:
+        resultado=0
+    elif n%(2*d)==0:
+        resultado=2
+    elif n%d ==0 and n%(2*d) !=0 :
+        resultado=1
+    else: 
+        resultado=0
+
+    return resultado

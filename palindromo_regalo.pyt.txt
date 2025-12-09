@@ -1,0 +1,23 @@
+/****
+	
+Si el número es palíndromo e impar, el regalo corresponde a una niña, y se retorna "girl". Si el número es palíndromo y par, el regalo corresponde a un niño, y se retorna "boy". Si el número es par, pero no palíndromo, el regalo corresponde a un hombre, y se retorna "man". Si el número es impar, pero no palíndromo, el regalo corresponde a una mujer, y se retorna "woman"
+*///
+
+def clasificar_regalo(numero:int)->str:
+    isPal = validar_palindromo (numero)
+    if isPal and numero%2!=0:
+        regalo='girl'
+    elif numero%2==0 and isPal:
+        regalo='boy'
+    elif numero%2!=0 and not(isPal):
+        regalo='woman'
+    elif numero%2==0 and not(isPal):
+        regalo='man'
+    return regalo
+
+def validar_palindromo(numero:int)->bool:
+    primerNum=(numero//10)//10
+    segundoNum=(numero//10)%10
+    terceroNum=numero%10
+    return primerNum == terceroNum
+

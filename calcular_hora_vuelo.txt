@@ -1,0 +1,56 @@
+def calcular_horario_llegada(hora_salida: int, minuto_salida: int, segundo_salida: int,
+duracion_horas: int,  duracion_minutos: int,duracion_segundos: int )-> str:
+   hora_llegada ='00'
+   minuto_llegada ='00'
+   seg_llegada='00'
+
+   sumaSeg= sumar_seg(segundo_salida,duracion_segundos)
+   if validar_valor_mayor(sumaSeg):
+    sumaSeg=sumaSeg-60
+    seg_llegada=str(sumaSeg)
+    sumaSeg=1 
+   else:
+    seg_llegada=str(sumaSeg)
+    sumaSeg=0
+   
+   sumaMin= sumar_min(minuto_salida,duracion_minutos,sumaSeg) 
+   if validar_valor_mayor(sumaMin):
+    sumaMin=sumaMin-60
+    if sumaMin>10:
+        minuto_llegada='00'
+    else:
+         minuto_llegada=str(sumaMin)
+    sumaMin=1    
+   else:
+    minuto_llegada=str(sumaMin)
+    sumaMin=0
+   
+   hora_llegada= sumar_Hora(hora_salida,duracion_horas,sumaMin)
+   hora_llegada= validar_hora_mayor(hora_llegada)
+
+
+   hora_final= str(hora_llegada)+':'+minuto_llegada+':'+seg_llegada
+   return hora_final
+
+
+def sumar_Hora(hora_salida:int, duracion_horas:int, suma_min:int )->int:
+    return hora_salida+duracion_horas+suma_min
+
+def sumar_min(minuto_salida:int, duracion_minutos:int, suma_seg:int)->int:
+    return minuto_salida+duracion_minutos+suma_seg
+
+def sumar_seg(segundo_salida:int, duracion_segundos:int)->int:
+    return segundo_salida+duracion_segundos
+
+def validar_valor_mayor(valor:int)->bool:
+    if valor>=60:
+        return True
+    return False
+
+def validar_hora_mayor(valor:int)->int:
+    if valor==24:
+        return 00
+    elif valor>24:
+        return valor-24
+    return valor
+
