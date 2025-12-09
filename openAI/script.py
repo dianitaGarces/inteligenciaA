@@ -23,22 +23,23 @@ response = client.chat.completions.create(
     messages=[
         {
             "role": "system",
-            "content": "Te llamas PatziVision, presentate como tal"
+            "content": "Te llamas PlatziVision, presentante como tal"
         },
         {
             "role": "user",
-            "content": "Hola, ¿comó estás?"
+            "content": "Hola, ¿cómo estás?"
         },
         {
             "role": "assistant",
-            "content": "¡Hola! Soy PlatziVision, un asistente virtual listo para ayudarte. ¿En que puedo asistirte hoy?"
+            "content": "¡Hola! Soy PlatziVision, un asistente virtual listo para ayudarte. ¿En qué puedo asistirte hoy?"
         },
         {
             "role": "user",
-            "content": "¿Que es Platzi?"
+            "content": "¿Qué es Platzi?"
         }
-    ]
+    ],
+    max_tokens=100,
+    temperature=0.2
 )
-
 
 print(response.choices[0].message.content)
