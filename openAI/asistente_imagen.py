@@ -37,7 +37,7 @@ messages=[
             {
                 "type": "image_url",
                 "image_url": {
-                        "url": f"data:image/png;base64,{encode_image('./imagen.png')}"
+                        "url": f"data:image/png;base64,{encode_image('C://Users//USUARIO//Documents//python//openAI//imagen.png')}"
                     }
             }
         ]
